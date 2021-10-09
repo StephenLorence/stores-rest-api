@@ -14,6 +14,7 @@ class StoreModel(db.Model):
 
     def json(self):
         return {"name": self.name, "id": self.id, "items": [{
+                                                                "id": item.id,
                                                                 "name": item.name,
                                                                 "price": item.price
                                                             } for item in self.items]}
@@ -22,6 +23,13 @@ class StoreModel(db.Model):
     def find_by_name(cls, name):
         try:
             return cls.query.filter_by(name=name).first()
+        except:
+            return {"message": "An error occurred finding the store."}, 500
+
+    @classmethod
+    def find_all(cls):
+        try:
+            return cls.query.all()
         except:
             return {"message": "An error occurred finding the store."}, 500
 
