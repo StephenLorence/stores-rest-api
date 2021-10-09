@@ -16,12 +16,24 @@ class ItemModel(db.Model):
         self.store_id = store_id
 
     def json(self):
-        return {"name": self.name, "price": self.price, "store_id": self.store_id}
+        return {
+            "id": self.id,
+            "name": self.name,
+            "price": self.price,
+            "store_id": self.store_id
+            }
 
     @classmethod
     def find_by_name(cls, name):
         try:
             return cls.query.filter_by(name=name).first()
+        except:
+            return {"message": "An error occurred finding the item."}, 500
+    
+    @classmethod
+    def find_all(cls):
+        try:
+            return cls.query.all()
         except:
             return {"message": "An error occurred finding the item."}, 500
 
